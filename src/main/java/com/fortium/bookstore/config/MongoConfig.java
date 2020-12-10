@@ -35,6 +35,11 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
         return Collections.singleton("com.fortium.bookstore.domain");
     }
 
+    @Override
+    protected boolean autoIndexCreation() {
+        return true;
+    }
+
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
