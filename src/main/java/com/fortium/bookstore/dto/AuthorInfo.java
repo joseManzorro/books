@@ -5,16 +5,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
-import java.util.Set;
 
+/**
+ * Author information excluding books to avoid infinite recursion when mapping from Book to BookDto
+ */
 @Getter
 @Setter
 @NoArgsConstructor
-public class AuthorDto {
-
+public class AuthorInfo {
     private Long id;
     @NotBlank(message = "An author should have first name")
     private String firstName;
     private String lastName;
-    private Set<BookInfo> books;
 }

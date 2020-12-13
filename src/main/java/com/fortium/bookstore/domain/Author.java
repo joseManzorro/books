@@ -1,26 +1,22 @@
 package com.fortium.bookstore.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.*;
 import java.util.Set;
 
-@Document
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@CompoundIndexes({@CompoundIndex(name = "first_and_last_name", def = "{'firstName' : 1, 'lastName': 1}", unique = true)})
 public class Author {
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String firstName;
     private String lastName;
+    @OneToMany(mappedBy = "author")
     private Set<Book> books;
 }

@@ -1,30 +1,32 @@
 package com.fortium.bookstore.facade;
 
-import com.fortium.bookstore.domain.Author;
-import com.fortium.bookstore.domain.Book;
-import com.fortium.bookstore.dto.AuthorDto;
 import com.fortium.bookstore.dto.BookDto;
 import com.fortium.bookstore.service.BookService;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class BookFacade {
 
-    private ModelMapper mapper;
+    public static final String BOOK_DOES_NOT_EXIST = "Book does not exist.";
+
+    @Autowired
     private BookService bookService;
 
-    public Optional<BookDto> getBook(String id) {
+    private final ModelMapper mapper = new ModelMapper();
+
+    public BookDto getBook(Long id) {
         return bookService.getBook(id)
-                .map((book) -> mapper.map(book, BookDto.class));
+                .map(author -> mapper.map(author, BookDto.class))
+                .orElseThrow(() -> new IllegalArgumentException(BOOK_DOES_NOT_EXIST));
     }
 
-    public BookDto createBook(BookDto book) {
-        return mapper.map(bookService.createBook(mapper.map(book, Book.class)), BookDto.class);
-
+    public List<BookDto> getBooks(Integer page, Integer limit) {
+        return mapper.map(bookService.getBooks(page, limit).getContent(),
+                new TypeToken<List<BookDto>>() {}.getType());
     }
 }
