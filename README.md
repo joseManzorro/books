@@ -22,7 +22,7 @@ Run the service on local and hit it using requests contained on: </br>
 Books.postman_collection.json
 ```
 
-## Contrainsts
+## Validations
 
 The API won't allow to add 2 Books with the same Title for the same Author.
 
