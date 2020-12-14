@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -39,7 +39,7 @@ public class AuthorController {
     }
 
     @GetMapping
-    public List<AuthorDto> getAuthors(@RequestParam Integer page, @RequestParam @Min(1) Integer limit) {
+    public List<AuthorDto> getAuthors(@RequestParam Integer page, @RequestParam @Positive Integer limit) {
         return authorFacade.getAuthors(page, limit);
     }
 
