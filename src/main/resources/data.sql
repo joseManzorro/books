@@ -26,3 +26,15 @@ INSERT INTO book (id, title, description, author_id) VALUES
   (4, 'A Year at the Chateau', 'Mapping Dick and Angel Strawbridge’s extraordinary project of bringing an abandoned French castle back to life, A Year at the Chateau tells the complete story of the undertaking, first explored in the Channel 4 show Escape to the Chateau.', 4),
   (5, 'The Sentinel', 'Heralding a new dawn for Jack Reacher, The Sentinel is co-written by Lee Child and his younger brother Andrew - but never fear, our favourite moral avenger is still in muscular form, stepping in to right the wrongs done to a band of country musicians.', 5),
   (6, 'Harry Potter and the Deathly Hallows', 'Harry Potter and the Deathly Hallows is a fantasy novel written by British author J. K. Rowling and the seventh and final novel of the Harry Potter series.', 1);
+
+-- Application Users
+
+CREATE TABLE IF NOT EXISTS user (
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL,
+    password VARCHAR(50)  NOT NULL,
+    roles VARCHAR(50)  NOT NULL
+);
+
+INSERT INTO USER(USERNAME, PASSWORD, ROLES) VALUES ('user', '{bcrypt}$2a$10$qzQvedvF3929O4NYWZCAE.QyFy9FZ5yWfrpe9kKAcaR62vsbuyzg.', 'user,admin');
+INSERT INTO USER(USERNAME, PASSWORD, ROLES) VALUES ('admin', '{bcrypt}$2a$10$TlNNbLTngMe9EcA4cIdW3eCEx5MFkvoFhD5REF9z2/4loxh8dKJwe', 'admin');
