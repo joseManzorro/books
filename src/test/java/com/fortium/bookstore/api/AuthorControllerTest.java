@@ -12,11 +12,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static com.fortium.bookstore.api.AuthorController.AUTHOR_API_PATH;
-import static com.fortium.bookstore.api.BookController.BOOK_API_PATH;
 import static com.fortium.bookstore.constant.TestConstants.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -30,7 +31,7 @@ class AuthorControllerTest {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
-    protected MockMvc mvc;
+    private MockMvc mvc;
 
     @Test
     void createAndGetAuthor() throws Exception {
@@ -41,6 +42,8 @@ class AuthorControllerTest {
 
         //Create a new author
         ResultActions performPost = mvc.perform(post(AUTHOR_API_PATH)
+                .with(csrf().asHeader())
+                .with(user("admin").password("admin").roles("ADMIN"))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(requestBody));
         performPost
@@ -51,7 +54,8 @@ class AuthorControllerTest {
                 .andExpect(status().isCreated());
         AuthorInfo authorInfo = mapper.readValue(performPost.andReturn().getResponse().getContentAsString(), AuthorInfo.class);
 
-        ResultActions performGet = mvc.perform(get(AUTHOR_API_PATH + "/" + authorInfo.getId()));
+        ResultActions performGet = mvc.perform(get(AUTHOR_API_PATH + "/" + authorInfo.getId())
+                .with(user("admin").password("admin").roles("ADMIN")));
         performGet
                 .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.firstName", is(FIRST_NAME)))
